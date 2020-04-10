@@ -149,6 +149,7 @@ export default {
         return String(item.id)!==String(this.id);
       })
     },
+    /**当前规格商品剩余库存 */
     temSpecIdStockNum() {
       return (this.specs || []).find(item => item.id === this.temSpecId).stockNum
     }
@@ -257,6 +258,10 @@ export default {
       if(!this.clientToken){
         alert('请先登录！');
         return;
+      }
+      if (this.temSpecIdStockNum < 1) {
+        alert('库存小于1不能购买');
+        return
       }
       const res = addOrder({
         token:this.clientToken,
