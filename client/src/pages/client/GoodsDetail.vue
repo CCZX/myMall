@@ -23,8 +23,11 @@
             <span>数量：</span>
             <NumberInput v-model="num" :min="1" :max="temStockNum"/>
           </div>
-          <button class="buyBtn" @click="buy">立即购买</button>
-          <button @click="addToCart">加入购物车</button>
+          <button :style="temSpecIdStockNum < 1 ? {'cursor': 'not-allowed'} : {}" :disabled="temSpecIdStockNum < 1" class="buyBtn" @click="buy">立即购买</button>
+          <button
+            :style="temSpecIdStockNum < 1 ? {'cursor': 'not-allowed'} : {}"
+             :disabled="temSpecIdStockNum < 1"
+            @click="addToCart">加入购物车</button>
         </div>
       </div>
       <section class="msgBox leftContainer">
@@ -145,6 +148,9 @@ export default {
       return this.goodsList.filter((item)=>{
         return String(item.id)!==String(this.id);
       })
+    },
+    temSpecIdStockNum() {
+      return (this.specs || []).find(item => item.id === this.temSpecId).stockNum
     }
   },
   data () {
@@ -315,6 +321,7 @@ export default {
 <style scoped lang="less">
 @import "../../assets/css/var.less";
 .GoodsDetail{
+  // cursor: not-allowed
   .content{
     width: 100%;
     padding-top: 20px;
