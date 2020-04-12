@@ -89,7 +89,7 @@ export default {
   flex-direction: column;
   width: 300px;
   height: 500px;
-  box-shadow: 0 6px 16px -8px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 5px 12px 0 rgba(0,0,0,0.1);
   background-color: #fff;
 }
 .cmp-header {
