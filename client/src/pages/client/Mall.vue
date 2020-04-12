@@ -103,10 +103,10 @@
         </div>
       </div>
     </footer>
-    <div v-if="showChat">
+    <div v-show="showChat">
       <vueDraggableResizable
-      :x="100"
-      :y="100"
+      :x="400"
+      :y="300"
     >
       <chat-cmp :my-socket-id = "mySocketId" />
     </vueDraggableResizable>
