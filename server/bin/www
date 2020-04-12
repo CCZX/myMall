@@ -8,6 +8,7 @@ var app = require('../app');
 var debug = require('debug')('demo:server');
 var http = require('http');
 
+
 /**
  * Get port from environment and store in Express.
  */
@@ -18,8 +19,36 @@ var port = normalizePort(process.env.PORT || '3000');
 /**
  * Create HTTP server.
  */
-
+const onlineUserMap = {}
 var server = http.createServer(app.callback());
+const io = require('socket.io').listen(server)
+io.sockets.on('connection', (socket) => {
+  console.log('连接成功', socket.id)
+  // onlineUserMap.push(socket.id)
+  socket.on('go', name => {
+    onlineUserMap[socket.id] = name
+    io.emit('receiveMsg', {
+      type: 'SYSTEM',
+      data:`用户 ${name} 加入聊天室`,
+      count: Object.values(onlineUserMap).length
+    })
+  })
+  
+  socket.on('sendMessage', data => {
+    io.emit('receiveMsg', data)
+  })
+  socket.on('disconnect', () => { // 关闭链接的时候会执行
+      const id = socket.id
+      if (!id) return
+      io.emit('receiveMsg', {
+        type: 'SYSTEM',
+        data: `用户 ${onlineUserMap[id]} 退出群聊`,
+        count: Object.values(onlineUserMap).length
+      })
+      delete onlineUserMap[id]
+  });
+});
+
 
 /**
  * Listen on provided port, on all network interfaces.

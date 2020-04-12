@@ -8,6 +8,7 @@
         <li @click="navTo('/backstage/orders')" :class="{selected:curPath==='/backstage/orders'}">订单管理</li>
         <li @click="navTo('/backstage/messages')" :class="{selected:curPath==='/backstage/messages'}">留言管理</li>
         <li @click="navTo('/backstage/editAdmin')" :class="{selected:curPath==='/backstage/editAdmin'}">修改资料</li>
+        <li @click="navTo('/backstage/usermsg')" :class="{selected:curPath==='/backstage/usermsg'}">用户消息</li>
       </ul>
     </div><div class="bsRight">
       <div class="header">

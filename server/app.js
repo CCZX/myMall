@@ -6,6 +6,8 @@ const bodyparser = require('koa-bodyparser');
 const logger = require('koa-logger');
 const jwt = require('koa-jwt');
 const cors = require('koa2-cors');
+// const server = require('http').createServer(app)
+// const io = require('socket.io').listen(3000)
 
 const mall = require('./routes/mall');
 const user = require('./routes/user');
@@ -52,5 +54,20 @@ app.use(admin.routes(), admin.allowedMethods());
 app.on('error', (err, ctx) => {
   console.error('server error', err, ctx)
 });
+
+// io.sockets.on('connection', (socket) => {
+//   console.log('连接成功', { id: socket.id })
+//   // socket.on('chatmessage', (msg) => {
+//   //     io.sockets.connected[socket.id].emit('user', msg.value); // 指定发送
+//   //     socket.emit('user', msg.value); // 广播
+//   // });
+//   socket.on('disconnect', () => { // 关闭链接的时候会执行
+//       console.log('user disconnected');
+//   });
+// });
+
+// server.listen(3000, () => {
+//   console.log(3000)
+// })
 
 module.exports = app;

@@ -17,9 +17,10 @@ exports.getType = async (ctx)=>{
 		}
 	}
 	catch(e){
+		console.log(e)
 		ctx.body={
 			code:10000,
-			message:'网络出错'
+			message:e
 		}
 	}
 }

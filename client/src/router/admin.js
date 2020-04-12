@@ -12,7 +12,8 @@ import Orders from '@/pages/admin/Orders'
 import EditOrders from '@/pages/admin/EditOrders'
 import EditGoods from '@/pages/admin/EditGoods'
 import Messages from '@/pages/admin/Messages' 
-import ErrorPage from '@/pages/ErrorPage' 
+import UserMsg from '@/pages/admin/UserMsg'
+import ErrorPage from '@/pages/ErrorPage'
 
 Vue.use(Router)
 
@@ -80,6 +81,13 @@ let router = new Router({
           meta: {
             requireLogin:true,
           },
+        },{
+          path: 'usermsg',
+          name: 'UserMsg',
+          component: UserMsg,
+          meta: {
+            requireLogin: true
+          }
         }
       ]
     },{//404页面

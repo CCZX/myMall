@@ -22,6 +22,12 @@
       <div class="fixedAd">
         <img src="../../assets/img/index2.gif" alt="" />
         <ul class="fixedList">
+          <li @click="setShowChat">
+            <i>
+              <svg t="1586702774906" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2229" width="20" height="20"><path d="M512 78.769231C250.092308 78.769231 41.353846 271.753846 41.353846 510.030769c0 74.830769 21.661538 145.723077 57.107692 208.738462 5.907692 9.846154 7.876923 21.661538 3.938462 33.476923l-61.046154 167.384615c-5.907692 15.753846 9.846154 29.538462 25.6 25.6l169.353846-64.984615c9.846154-3.938462 21.661538-1.969231 33.476923 3.938461 70.892308 39.384615 155.569231 63.015385 246.153847 63.015385C773.907692 945.230769 984.615385 754.215385 984.615385 513.969231 982.646154 271.753846 771.938462 78.769231 512 78.769231zM275.692308 590.769231c-43.323077 0-78.769231-35.446154-78.769231-78.769231s35.446154-78.769231 78.769231-78.769231 78.769231 35.446154 78.76923 78.769231-35.446154 78.769231-78.76923 78.769231z m236.307692 0c-43.323077 0-78.769231-35.446154-78.769231-78.769231s35.446154-78.769231 78.769231-78.769231 78.769231 35.446154 78.769231 78.769231-35.446154 78.769231-78.769231 78.769231z m236.307692 0c-43.323077 0-78.769231-35.446154-78.76923-78.769231s35.446154-78.769231 78.76923-78.769231 78.769231 35.446154 78.769231 78.769231-35.446154 78.769231-78.769231 78.769231z" p-id="2230"></path></svg>
+            </i>
+            <span>加入聊天</span>
+          </li>
           <li>
             <i class="iconfont icon-collection_fill" />
             <span>新人有礼</span>
@@ -97,13 +103,23 @@
         </div>
       </div>
     </footer>
+    <div v-if="showChat">
+      <vueDraggableResizable
+      :x="100"
+      :y="100"
+    >
+      <chat-cmp :my-socket-id = "mySocketId" />
+    </vueDraggableResizable>
+    </div>
   </div>
 </template>
 
 <script>
 import { mapState,mapMutations } from 'vuex';
 import NoticeList from '../../components/NoticeList';
-import {getClientSize,backToTop} from '../../util/util';
+import {getClientSize,backToTop, getLocalItem} from '../../util/util';
+import ChatCmp from './ChatCmp'
+import vueDraggableResizable from 'vue-draggable-resizable'
 
 export default {
   name: 'Mall',
@@ -114,13 +130,17 @@ export default {
     ]),
   },
   components:{
-    NoticeList
+    NoticeList,
+    ChatCmp,
+    vueDraggableResizable
   },
   data () {
     return {
       notices:['今日疯抢：牛皮防水男靴仅229元！直减2...','【福利】领1000元APP新人礼'],
       clientHeight:getClientSize().height,
-      shouldShowBT:false
+      shouldShowBT:false,
+      showChat: false,
+      mySocketId: ''
     }
   },
 
@@ -128,6 +148,11 @@ export default {
     ...mapMutations({
       clientLogout: 'CLIENT_LOGOUT',
     }),
+    setShowChat() {
+      const userName = getLocalItem('clientName')
+      if (!userName) return
+      this.showChat = !this.showChat
+    },
     navTo(route){
       this.$router.push(route)
     },
@@ -146,6 +171,14 @@ export default {
         this.shouldShowBT = false;
       }
     }
+  },
+
+  sockets: {
+    connect(id) {
+      //与socket.io连接后回调
+      console.log("socket connected 123123", this.$socket.id);
+      this.mySocketId = this.$socket.id
+    },
   },
 
   mounted(){
